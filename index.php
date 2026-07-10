@@ -53,7 +53,11 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
+if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'abhishekdevops.live') !== false) {
+	define('ENVIRONMENT', 'production');
+} else {
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+}
 
 /*
  *---------------------------------------------------------------
@@ -66,7 +70,14 @@
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
+		if (version_compare(PHP_VERSION, '8.0', '>='))
+		{
+			error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+		}
+		else
+		{
+			error_reporting(-1);
+		}
 		ini_set('display_errors', 1);
 	break;
 
